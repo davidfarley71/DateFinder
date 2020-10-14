@@ -84,7 +84,12 @@ code {
 }
 
 .questionBox [type=number] {
-  width: 50px;
-  margin: 10px;
+  width: 42px;
+  margin: 0 10px 0 10px;
+  background: #d3d2cf;
+}
+
+.questionBox label:hover {
+  background-color: blue;
 }
 /*# sourceMappingURL=index.css.map */
