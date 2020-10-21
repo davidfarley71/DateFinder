@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Container, InputGroup, FormControl } from 'react-bootstrap'
 import axios from "axios";
-// import ReactTable from "react-table";
-// import {matchSorter} from 'match-sorter'
-// import { useTable } from 'react-table'
+import {AgGrid} from './AgGrid'
 
 export default App;
 
@@ -103,40 +101,9 @@ function App() {
         </div>
 
         <button onClick={search}>test</button>
+          <AgGrid/>
 
-
-        <div className="reacttablecontainer">
-          {/* <ReactTable
-            data={search}
-            filterable
-            columns={[
-              {
-                columns: [
-                  {
-                    Header: "Title",
-                    accessor: "Title",
-                    minWidth: 300,
-                    filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["Title"] }),
-                    filterAll: true
-                  },
-                  {
-                    Header: "Author",
-                    accessor: "Author",
-                    filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["Author"] }),
-                    filterAll: true
-                  },
-                ]
-              }
-            ]}
-            defaultPageSize={50}
-            className="-striped -highlight"
-            style={{
-              height: "780px" // This will force the table body to overflow and scroll, since there is not enough room
-            }}
-          /> */}
-        </div>
+        
       </div>
     </div>
   );
