@@ -1,31 +1,25 @@
-'use strict';
 
 import React, { useState } from 'react';
+import { render } from 'react-dom';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import data from './data.json'
 import axios from 'axios'
+import data from './data.json'
 
-export const AgGrid = () => {
+
+export const ExternalFilter = () => {
     const [gridApi, setGridApi] = useState(null);
     const [gridColumnApi, setGridColumnApi] = useState(null);
     const [rowData, setRowData] = useState(null);
-    // const [interestSelected, setinterestSelected] = useState([]);
-    // const [filterCol, setfilterCol] = useState('');
-    var interestSelected = [];
-    var filterCol = ''
-
-    const isExternalFilterPresent = () => {
-        console.log('isExternalFilter PResent')
-        return true
-    };
+    // var interestSelected = ['int'];
+    // var filterCol = 'test'
+    let [interestSelected, setinterestSelected] = useState([]);
+    let [filterCol, setfilterCol] = useState('');
 
     const onGridReady = (params) => {
         setGridApi(params.api);
         setGridColumnApi(params.columnApi);
-
-
         axios
             .get('http://localhost:3003')
             .then(res => {
@@ -34,9 +28,9 @@ export const AgGrid = () => {
             });
     };
 
-
-    const temp =function(filterType, value, bool){
-         switch (filterType) {
+    const externalFilterChanged = (filterType, value, bool, newValue) => {
+        ageType = newValue;
+        switch (filterType) {
             case 'interest':
                 if (bool) {
                     interestSelected.push(value)
@@ -45,61 +39,46 @@ export const AgGrid = () => {
                         return thing != value;
                     })
                 }
-                default:
+            default:
 
-                
+
         }
         console.log(filterCol, interestSelected)
-    }
-    // const externalFilterChanged = (filterType, value, bool, newValue) => {
-    //     ageType = newValue;
-    //     interestSelected.push(value)
-    //     // switch (filterType) {
-    //     //     case 'interest':
-    //     //         if (bool) {
-                    
-    //     //         } else {
-    //     //             interestSelected = interestSelected.filter(function (thing) {
-    //     //                 return thing != value;
-    //     //             })
-    //     //         }
-    //     //         default:
+        gridApi.onFilterChanged();
+    };
 
-                
-    //     // }
-    //     // ageType = newValue;
-    //     console.log(filterCol, interestSelected)
-    // };
+    const isExternalFilterPresent = () => {
+        return true
+    };
 
-    const externalFilterChanged = (filterType, value, bool, newValue) => {
-        ageType = newValue;
-       gridApi.onFilterChanged();
-   };
-
-    const ApplyInterestFilter = (filter) => {
-         filterCol = filter;
+    const test = () => {
         console.log(filterCol)
 
+    };
+
+    const doesExternalFilterPass = (node) => {
+        console.log(filterCol, interestSelected)
+        // for (let i in interestSelected) {
+
+        //     if (node.data[filterCol].includes(interestSelected[i])) continue
+        //     return false;
+        // }us
+        // return true;
+    };
+
+    const ApplyInterestFilter = (filter) => {
+        setfilterCol(filter)
+        console.log(filterCol)
+        console.log(filter)
         console.log(interestSelected)
         gridApi.onFilterChanged();
     };
 
-    const doesExternalFilterPass = (node) => {
-        console.log(filterCol)
-
-        for (let i in interestSelected) {
-
-            if (node.data[filterCol].includes(interestSelected[i])) continue
-            return false;
-        }
-        return true;
-
-    };
-
     return (
         <div style={{ width: '100%', height: '100%' }}>
+             <button onClick={e => test('interest')}>Apply Filter</button>
             <div className="ExternalFilters">
-                <button onClick={e => ApplyInterestFilter()}>Apply Filter</button>
+                <button onClick={e => ApplyInterestFilter('interest')}>Apply Filter</button>
                 {data.interests.map((value, index) => {
                     return <label key={value + index}>
                         {value}
@@ -108,13 +87,11 @@ export const AgGrid = () => {
                             name={value}
                             id={"interest" + value}
                             value={false}
-                            onChange={e => temp("interest", value, e.target.checked)}
+                            onChange={e => externalFilterChanged("interest", value, e.target.checked)}
                         />
                     </label>
                 }
                 )}
-
-
 
             </div>
             <div
@@ -159,8 +136,8 @@ var dateFilterParams = {
         }
     },
 };
-var ageType = 'everyone';
 
+var ageType = 'everyone';
 function asDate(dateAsString) {
     var splitFields = dateAsString.split('/');
     return new Date(splitFields[2], splitFields[1], splitFields[0]);
