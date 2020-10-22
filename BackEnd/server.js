@@ -45,7 +45,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.get('/', async (req, res) => {
   let temp = {}
-  pool.query('SELECT * FROM public.user limit 10', (error, queryres) => {
+  pool.query('SELECT * FROM public.rando limit 10', (error, queryres) => {
     if(error) console.log('there was an error with the this path :/')
     temp = 'test';
     // console.log(temp)
