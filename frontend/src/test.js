@@ -53,10 +53,12 @@ export const ExternalFilter = () => {
 
     const test = () => {
         console.log(filterCol)
+        console.log('test')
 
     };
 
     const doesExternalFilterPass = (node) => {
+        test();
         console.log(filterCol, interestSelected)
         // for (let i in interestSelected) {
 
@@ -64,6 +66,9 @@ export const ExternalFilter = () => {
         //     return false;
         // }us
         // return true;
+
+
+        
     };
 
     const ApplyInterestFilter = (filter) => {

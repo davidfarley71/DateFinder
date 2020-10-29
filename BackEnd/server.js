@@ -32,7 +32,7 @@ app.use(cors({
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'dating',
+    database: 'postgres',
     password: 'Mybffjill1#',
     port: 5432,
   })
@@ -45,10 +45,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.get('/', async (req, res) => {
   let temp = {}
-  pool.query('SELECT * FROM public.rando limit 10', (error, queryres) => {
-    if(error) console.log('there was an error with the this path :/')
+  pool.query('SELECT * FROM public.rando limit 500', (error, queryres) => {
+    if(error) console.log('there was an error with the this path :/  :'+ error)
     temp = 'test';
     // console.log(temp)
+    // console.log(queryres)
     res.json(queryres)
   })
   // console.log(temp)
