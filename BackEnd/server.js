@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3003
+const port = 3009
 const bodyParser = require("body-parser")
 const { Pool } = require('pg')
 var cors = require('cors');
@@ -24,10 +24,6 @@ app.use(cors({
     }
 }));
 
-  // there are two ways to connect to a server. with client.connect and with a pool.
-  // a pool is more scaleable and is probably preferable since it doesnt make a new connection every time you write a query.
-  // if you close the pool connection with pool.end(); you will need to re-open it before you use it again.
-  // in general though you dont need to close the pool
   
 const pool = new Pool({
     user: 'postgres',
@@ -44,20 +40,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 app.get('/', async (req, res) => {
-  let temp = {}
   pool.query('SELECT * FROM public.rando limit 500', (error, queryres) => {
     if(error) console.log('there was an error with the this path :/  :'+ error)
-    temp = 'test';
-    // console.log(temp)
-    // console.log(queryres)
+    console.log(queryres)
     res.json(queryres)
   })
-  // console.log(temp)
-  // res.json(temp)
-  // here temp is still {}, im not sure why the assignment wont stick outside the query block
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Server listening on port ${port}!`))
 
 
 

@@ -9,7 +9,7 @@ import axios from 'axios'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 
-export const AgGrid = () => {
+export const AgGrid = (props) => {
     const [gridApi, setGridApi] = useState(null);
     const [gridColumnApi, setGridColumnApi] = useState(null);
     const [rowData, setRowData] = useState(null);
@@ -29,7 +29,7 @@ export const AgGrid = () => {
         setGridApi(params.api);
         setGridColumnApi(params.columnApi);
         axios
-            .get('http://localhost:3003')
+            .get('http://localhost:3009')
             .then(res => {
                 console.log(res.data)
                 setRowData(res.data.rows)
@@ -70,6 +70,8 @@ export const AgGrid = () => {
 
     return (
         <div style={{ width: '100%', height: '100%' }}>
+            {JSON.stringify(props.user)}
+
             <div className="ExternalFilters">
                 <button onClick={e => ApplyInterestFilter('interests')}>Apply Filter</button>
                 <select multiple={true} onChange={e => externalFilterChanged("interest", true, e.target.options)}>
